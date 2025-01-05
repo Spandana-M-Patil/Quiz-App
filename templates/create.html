@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Quiz</title>
+    <style>
+        /* General Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background: linear-gradient(135deg, #F5F7FB, #C9D6FF);
+            padding: 50px 0;
+        }
+
+        .container {
+            width: 80%;
+            max-width: 900px;
+            margin: 0 auto;
+            background-color: #fff;
+            border-radius: 16px;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+            padding: 40px;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            text-align: center;
+            color: #2C3E50;
+            margin-bottom: 30px;
+        }
+
+        /* Input and Textarea Styling */
+        .quizName label {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #34495E;
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        .quizName input,
+        .quizName textarea {
+            width: 100%;
+            padding: 15px;
+            font-size: 1rem;
+            border-radius: 8px;
+            border: 1px solid #BDC3C7;
+            color: #2C3E50;
+            background-color: #ECF0F1;
+            transition: all 0.3s ease;
+        }
+
+        .quizName input:focus,
+        .quizName textarea:focus {
+            border-color: #3498DB;
+            background-color: #fff;
+            outline: none;
+        }
+
+        .quizName textarea {
+            resize: vertical;
+            min-height: 120px;
+        }
+
+        /* Question Card Styling */
+        .question {
+            background-color: #fff;
+            padding: 20px;
+            margin-bottom: 25px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .question label {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #34495E;
+            margin-bottom: 8px;
+            display: block;
+        }
+
+        .question input {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 18px;
+            font-size: 1rem;
+            border-radius: 8px;
+            border: 1px solid #BDC3C7;
+            color: #2C3E50;
+            background-color: #ECF0F1;
+            transition: all 0.3s ease;
+        }
+
+        .question input:focus {
+            border-color: #3498DB;
+            background-color: #fff;
+            outline: none;
+        }
+
+        .correct-answer {
+            background-color: #D4EDDA;
+            border: 1px solid #28A745;
+        }
+
+        /* Button Styling */
+        button {
+            padding: 15px 25px;
+            font-size: 1.1rem;
+            background-color: #3498DB;
+            color: white;
+            border-radius: 8px;
+            border: none;
+            cursor: pointer;
+            width: 100%;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #2980B9;
+            transform: scale(1.05);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .container {
+                width: 90%;
+                padding: 25px;
+            }
+
+            h1 {
+                font-size: 2rem;
+            }
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Create Your Quiz</h1>
+        <form action="" method="post">
+            {% csrf_token %}
+
+            <!-- Quiz Name and Description -->
+            <div class="quizName">
+                <label for="title">Quiz Name: </label>
+                <input type="text" id="title" name="title" required>
+
+                <label for="description">Description: </label>
+                <textarea id="description" name="description"></textarea>
+            </div>
+
+            <!-- Dynamic Questions -->
+            <div id="questions"></div>
+
+            <!-- Submit Button -->
+            <button type="submit">Create Quiz</button>
+        </form>
+    </div>
+
+    <script>
+        const qpPanel = document.getElementById('questions');
+        const maxQuestions = 5;
+        const maxOptions = 4;
+
+        window.addEventListener('load', function () {
+            for (let q = 1; q <= maxQuestions; q++) {
+                // Create question container
+                const questionDiv = document.createElement('div');
+                questionDiv.className = 'question';
+
+                // Add question input
+                const questionLabel = document.createElement('label');
+                questionLabel.innerText = `Question ${q}: `;
+                const questionInput = document.createElement('input');
+                questionInput.type = 'text';
+                questionInput.name = `question_${q}`;
+                questionInput.required = true;
+
+                questionDiv.appendChild(questionLabel);
+                questionDiv.appendChild(questionInput);
+
+                // Add options for the question
+                for (let o = 1; o <= maxOptions; o++) {
+                    const optionLabel = document.createElement('label');
+                    optionLabel.innerText = ` Option ${o}: `;
+                    const optionInput = document.createElement('input');
+                    optionInput.type = 'text';
+                    optionInput.name = `option_${q}_${o}`;
+                    optionInput.required = true;
+
+                    questionDiv.appendChild(optionLabel);
+                    questionDiv.appendChild(optionInput);
+                }
+
+                // Add correct answer input for the question
+                const correctAnswerLabel = document.createElement('label');
+                correctAnswerLabel.innerText = ` Correct Answer (Option number) for Question ${q}: `;
+                const correctAnswerInput = document.createElement('input');
+                correctAnswerInput.type = 'number';
+                correctAnswerInput.name = `correct_${q}`;
+                correctAnswerInput.required = true;
+                correctAnswerInput.className = 'correct-answer';
+
+                questionDiv.appendChild(correctAnswerLabel);
+                questionDiv.appendChild(correctAnswerInput);
+
+                // Append the question div to the questions panel
+                qpPanel.appendChild(questionDiv);
+            }
+        });
+    </script>
+
+</body>
+</html>

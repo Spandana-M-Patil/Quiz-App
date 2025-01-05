@@ -3,17 +3,123 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Welcome Page</title>
+    <style>
+        /* General Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f2f3f5;
+            color: #333;
+            padding: 50px 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            text-align: center;
+        }
+
+        .container {
+            background-color: #ffffff;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            border-radius: 12px;
+            padding: 50px 40px;
+            width: 90%;
+            max-width: 500px;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            color: #333;
+            margin-bottom: 30px;
+            font-weight: 700;
+        }
+
+        .message {
+            background-color: #ffecb3;
+            color: #333;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+            font-size: 1.2rem;
+            text-align: left;
+        }
+
+        .message .message-text {
+            margin-bottom: 0;
+        }
+
+        a {
+            display: inline-block;
+            padding: 18px 35px;
+            font-size: 1.1rem;
+            color: #fff;
+            background-color: #28a745;
+            text-decoration: none;
+            border-radius: 8px;
+            margin: 15px;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+        }
+
+        a:hover {
+            background-color: #218838;
+            transform: translateY(-2px);
+        }
+
+        a:active {
+            transform: translateY(0);
+        }
+
+        /* Hoverable Message Styling */
+        .message:hover {
+            background-color: #ffdd57;
+            transform: scale(1.03);
+            transition: transform 0.2s ease;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .container {
+                padding: 30px 20px;
+                width: 85%;
+            }
+
+            h1 {
+                font-size: 2rem;
+            }
+
+            a {
+                font-size: 1rem;
+            }
+        }
+
+    </style>
 </head>
 <body>
-    {% if messages %}
-                <div class="message">
-                    {% for message in messages %}
-                        {{ message }}
-                    {% endfor %}
-                </div>
-            {% endif %}
-    Welcome!!
-    
+
+    <div class="container">
+        <h1>Welcome!</h1>
+
+        {% if messages %}
+            <div class="message">
+                {% for message in messages %}
+                    <p class="message-text">{{ message }}</p>
+                {% endfor %}
+            </div>
+        {% endif %}
+
+        <div>
+            <a href="/create/">Create a Quiz</a>
+        </div>
+        <div>
+            <a href="/play/">Play a Quiz</a>
+        </div>
+    </div>
+
 </body>
 </html>
